@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>멘델의 완두콩 | 어게인 실험과학 수학학원</title>
+<meta name="description" content="외울 문장, 완두콩 교배 게임, OX 퀴즈로 알아보는 분리의 법칙">
+<script>
+/* ===== OX 퀴즈 : [문제, 정답, 풀이] — 여기만 고치면 퀴즈가 바뀌어요 (12쪽 OX와 같게) ===== */
+const QS=[
+ ['점박이(Aa) 강아지는 새끼에게 A와 a를 둘 다 준다.','X','한 쌍의 유전자는 나뉘어, A와 a 중 하나만 새끼에게 전해져요. 이것이 분리의 법칙이에요.'],
+ ['두 부모가 모두 a를 주면, 새끼는 민무늬(aa)가 된다.','O','a를 두 개 받은 새끼는 A가 없어서, 숨어 있던 민무늬가 겉으로 나타나요.'],
+ ['Aa 강아지는 우성인 A 때문에 겉으로 점박이로 보인다.','O','유전자 한 쌍이 서로 다를 때 겉으로 나타나는 것이 우성이에요. 열성인 a는 숨어요.'],
+ ['점박이(Aa) 부모에게서 태어난 새끼는 모두 점박이다.','X','두 부모가 모두 a를 주면 민무늬 새끼가 태어나요. 네 마리 중 한 마리꼴이에요.'],
+ ['털색 유전자 한 쌍도 나뉘어, 새끼에게 하나씩 전해진다.','O','무늬 유전자처럼 털색 유전자 한 쌍(Bb)도 나뉘어 하나씩 전해져요. 그래서 흰색 : 갈색도 3 : 1이에요.']
+];
+/* ===== 외울 문장 : 빈칸 정답(차례대로)과 낱말 단추 ===== */
+const SLOTS=['유전자','나뉘어','하나씩'];
+const WORDS=['유전자','나뉘어','하나씩','둘 다','섞여','우성'];
+</script>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#13294b; --navy-d:#0a1a33; --navy-s:#eef2f8; --mid:#c5cfdd; --line:#dfe5ee;
+  --teal:#0e9f97; --teal-d:#0a726c; --teal-s:#e0f6f4;
+  --orange:#ff7b1c; --orange-d:#c25300; --orange-s:#fff1e4;
+  --ruby:#c8283a; --ink:#22293a; --sub:#5f6b7d; --gray:#a9b6c8;
+  --pea:#f3cd47; --pod:#7cbf4a; --pod-d:#4f8f2a; --pod-s:#eef8e4;
+}
+*{box-sizing:border-box}
+html,body{margin:0;color:var(--ink);font-family:"Noto Sans KR",system-ui,sans-serif;font-weight:500;background:#fff}
+body{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;touch-action:manipulation}
+.jua,header,nav,.bbtn,.msg,.sent,.read,.quiz,footer,.note,.slotbox,.card,.stat,.mendel{font-family:"Jua",sans-serif}
+
+.bbtn{font-size:21px;min-height:60px;padding:8px 18px;color:#fff;background:var(--navy);border-radius:999px;
+  box-shadow:inset 0 -6px 0 rgba(0,0,0,.18),0 5px 0 var(--navy-d);word-break:keep-all;line-height:1.15}
+.bbtn:active{transform:translateY(3px)}
+.bbtn.orange{background:var(--orange);color:#3b1700;box-shadow:inset 0 -6px 0 rgba(0,0,0,.08),0 5px 0 var(--orange-d)}
+.bbtn.green{background:var(--pod);color:#13300a;box-shadow:inset 0 -6px 0 rgba(0,0,0,.1),0 5px 0 var(--pod-d)}
+.bbtn.white{background:#fff;color:var(--navy);box-shadow:0 4px 0 var(--mid);border:3px solid var(--mid)}
+.bbtn.on{background:var(--teal-s);color:var(--teal-d);border-color:var(--teal);box-shadow:0 4px 0 var(--teal)}
+.bbtn:disabled{opacity:.4;cursor:default}
+
+header{position:sticky;top:0;z-index:30;background:#fff;box-shadow:0 3px 0 var(--line);padding:8px 16px}
+.head-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.titles{flex:1;min-width:0}
+.brand{font-size:15px;color:var(--sub)}
+h1{margin:0;font-weight:400;font-size:clamp(21px,4vw,32px);color:var(--navy);line-height:1.15;word-break:keep-all}
+.share{font-size:18px;min-height:52px;padding:6px 20px;flex:none}
+
+nav{max-width:1180px;width:100%;margin:10px auto 0;padding:0 12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.tab{position:relative;min-height:58px;border-radius:18px;background:var(--navy-s);font-size:clamp(16px,2.2vw,21px);line-height:1.15;padding:4px;
+  border:3px solid transparent;word-break:keep-all;text-align:center;color:var(--navy)}
+.tab.on{background:var(--navy);color:#fff}
+.tab .star{position:absolute;top:-10px;right:-2px;font-size:22px;color:var(--orange);display:none}
+.tab.done .star{display:block;animation:pop .5s}
+
+main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:10px 12px 14px;overflow-x:hidden;overflow-x:clip}
+.panel{display:none}
+.panel.on{display:block;animation:fadein .3s}
+.msg{background:var(--navy-s);border-radius:18px;padding:9px 16px;font-size:clamp(17px,2.3vw,21px);line-height:1.35;word-break:keep-all;min-height:calc(2.7em + 18px)}
+.msg b{font-weight:400;color:var(--orange-d)}
+.msg.warn{background:var(--orange-s);animation:shake .4s}
+.msg.good{background:var(--teal-s)}
+.row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;padding-bottom:5px}
+
+/* 1 외울 문장 */
+.memo{display:grid;gap:12px;max-width:940px;margin:0 auto}
+.sent{background:#fff;border:3px solid var(--line);border-radius:24px;padding:20px 16px;font-size:clamp(22px,3.4vw,32px);line-height:1.75;text-align:center;word-break:keep-all;color:var(--ink);transition:background .3s}
+.sent .term{color:var(--navy)}
+.slot{display:inline-block;min-width:3em;padding:0 .25em;margin:0 .08em;border-bottom:4px solid var(--mid);color:var(--teal-d);line-height:1.25}
+.slot.cur{border-color:var(--orange);background:var(--orange-s);border-radius:10px 10px 0 0}
+.slot.ok{border-color:var(--teal);animation:pop .4s}
+.sent.solved{background:var(--teal-s);border-color:var(--teal);font-size:clamp(26px,4.4vw,42px);line-height:1.5;padding:26px 18px}
+.sent.solved .slot{border:0;background:none;min-width:0;padding:0;margin:0;color:var(--orange-d)}
+.words{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding-bottom:5px}
+.words .bbtn{font-size:clamp(20px,3vw,26px);padding:6px}
+.words .bbtn.on{opacity:1}
+.read{display:none;text-align:center}
+.read.on{display:block;animation:fadein .4s}
+.read p{font-size:clamp(23px,3.4vw,30px);color:var(--navy);margin:2px 0 12px}
+.dots{display:flex;gap:16px;justify-content:center}
+.dots button{width:74px;height:74px;border-radius:50%;border:4px solid var(--mid);background:#fff;font-family:"Jua",sans-serif;font-size:20px;color:var(--sub);box-shadow:0 4px 0 var(--mid);line-height:1.1}
+.dots button.on{background:var(--orange);border-color:var(--orange-d);color:#fff;box-shadow:0 4px 0 var(--orange-d);animation:pop .4s}
+
+/* 2 완두콩 교배 게임 */
+.gwrap{display:grid;gap:12px;margin-top:10px}
+.lab{display:grid;gap:8px;min-width:0}
+.h2{font-family:"Jua",sans-serif;font-size:clamp(18px,2.4vw,22px);color:var(--navy);margin:0 0 6px}
+.h2 small{font-size:.78em;color:var(--sub)}
+.box{border:3px solid var(--line);border-radius:20px;padding:8px 12px;background:#fff}
+.bank{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.card{position:relative;display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto auto;column-gap:8px;align-items:center;text-align:left;padding:6px 10px;border-radius:18px;background:var(--pod-s);
+  border:3px solid #cfe6b8;box-shadow:0 4px 0 #cfe6b8;font-size:clamp(16px,2.2vw,21px);color:#24420f;line-height:1.15;word-break:keep-all}
+.card svg{grid-row:span 2;width:clamp(40px,5vw,50px);height:clamp(40px,5vw,50px)}
+.card .d{font-family:"Noto Sans KR",sans-serif;font-size:12.5px;color:#4d6b33;line-height:1.3}
+.card.pick{border-color:var(--orange);box-shadow:0 4px 0 var(--orange-d);background:var(--orange-s)}
+.card.hide{visibility:hidden}
+.card.new{animation:pop .6s}
+.card .tag{position:absolute;top:-11px;right:-4px;background:var(--orange);color:#fff;font-size:14px;padding:2px 9px;border-radius:999px}
+.pair{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
+.slotbox{min-height:74px;border:3px dashed var(--mid);border-radius:18px;display:flex;align-items:center;justify-content:center;gap:6px;flex-direction:row;
+  font-size:clamp(16px,2.2vw,20px);color:var(--sub);text-align:center;word-break:keep-all;padding:6px;line-height:1.15}
+.slotbox.full{border-style:solid;border-color:var(--pod);background:var(--pod-s);color:#24420f}
+.slotbox svg{width:38px;height:38px;flex:none}
+.slotbox .x{display:none}
+.times{font-family:"Jua",sans-serif;font-size:36px;color:var(--pod-d)}
+.btns{display:grid;grid-template-columns:2fr 1.3fr 1fr;gap:10px}
+.btns .bbtn{font-size:clamp(17px,2.3vw,21px);padding:6px 8px}
+.tip{font-size:14px;color:var(--sub);text-align:center;margin:6px 0 0;word-break:keep-all}
+.field{position:relative;min-height:118px;border-radius:18px;background:linear-gradient(#f7fbef,#eef6e2);border:3px solid #d9ecc6;padding:10px;overflow:hidden}
+.pod{display:flex;justify-content:center;align-items:center;height:94px}
+.pod svg{width:min(300px,70%);height:auto}
+.pod .lid{transition:transform .5s;transform-origin:6% 58%}
+.pod.open .lid{transform:rotate(-16deg)}
+.peas{display:grid;grid-template-columns:repeat(auto-fill,minmax(30px,1fr));gap:4px}
+.peas svg{width:100%;height:auto;animation:pop .35s both}
+.more{font-family:"Jua",sans-serif;text-align:center;color:var(--sub);font-size:17px;margin-top:6px}
+.stat{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center}
+.stat div{background:var(--navy-s);border-radius:14px;padding:3px 4px}
+.stat .k{font-size:15px;color:var(--sub)}
+.stat .v{font-size:clamp(22px,3vw,30px);color:var(--navy)}
+.stat .r .v{color:var(--orange-d)}
+.ratio{display:flex;height:22px;border-radius:999px;overflow:hidden;background:var(--line);margin-top:6px}
+.ratio i{display:block;height:100%;transition:width .6s}
+.ratio .a{background:var(--pea)} .ratio .b{background:#9a7b2a}
+
+.notes{display:grid;gap:10px;align-content:start}
+.note{border:3px solid var(--line);border-radius:20px;padding:10px 12px;background:#fff;font-size:clamp(17px,2.2vw,20px);line-height:1.4;word-break:keep-all}
+.note .nt{display:flex;align-items:center;gap:8px;color:var(--navy);font-size:clamp(18px,2.4vw,22px);margin-bottom:4px}
+.note .no{width:32px;height:32px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-size:18px;flex:none}
+.note.lock{opacity:.5}
+.note.cur{border-color:var(--orange);box-shadow:0 0 0 3px var(--orange-s)}
+.note.ok{border-color:var(--teal);background:var(--teal-s)}
+.note.ok .no{background:var(--teal)}
+.note .q{margin:4px 0 8px}
+.note .todo{color:var(--orange-d)}
+.note .ans{color:var(--teal-d)}
+.note .ch{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px}
+.note .ch .bbtn{font-size:clamp(16px,2.1vw,19px);min-height:50px;padding:4px 8px}
+.pun{display:grid;grid-template-columns:64px 1fr 1fr;gap:6px;margin:6px 0;text-align:center}
+.pun .hd{font-size:22px;color:var(--navy);background:var(--navy-s);border-radius:12px;display:grid;place-items:center;min-height:48px;line-height:1.05}
+.pun .hd small{font-size:12px;color:var(--sub);display:block}
+.pun button{min-height:78px;border-radius:14px;border:3px dashed var(--orange);background:var(--orange-s);font-family:"Jua",sans-serif;font-size:21px;color:var(--orange-d);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1.1}
+.pun button.ok{border:3px solid var(--teal);background:#fff;color:var(--navy);animation:pop .35s;opacity:1}
+.pun button svg{width:34px;height:34px}
+.pun button span{font-size:14px;color:var(--sub)}
+.big{font-size:clamp(19px,2.6vw,24px);color:var(--navy);background:#fff;border:3px solid var(--teal);border-radius:16px;padding:10px;text-align:center;margin:8px 0}
+.mendel{background:var(--orange-s);border-radius:16px;padding:8px 10px;text-align:center;color:#5a2a00;font-size:clamp(16px,2.2vw,19px)}
+.mendel b{font-weight:400;font-size:1.25em;color:var(--orange-d)}
+
+/* 3 OX 퀴즈 */
+.score{font-size:21px;color:var(--sub);text-align:center}
+.score b{font-weight:400;color:var(--orange-d);font-size:1.3em}
+.quiz{max-width:820px;margin:0 auto;text-align:center}
+.qq{background:var(--navy-s);border-radius:24px;padding:16px;margin:8px 0;font-size:clamp(22px,3.4vw,32px);line-height:1.35;word-break:keep-all;min-height:124px;display:grid;place-items:center}
+.ox{display:flex;gap:18px;justify-content:center}
+.ox button{width:min(42%,200px);height:clamp(92px,16vh,140px);border-radius:28px;font-size:clamp(62px,12vw,90px);line-height:1;color:#fff}
+.ox .o{background:var(--navy);box-shadow:0 7px 0 var(--navy-d)}
+.ox .x{background:var(--orange);color:#3b1700;box-shadow:0 7px 0 var(--orange-d)}
+.ox button:active{transform:translateY(4px)}
+.ox button:disabled{opacity:.4}
+.fb{min-height:4.2em;margin:14px 0 10px;font-size:clamp(18px,2.6vw,23px);line-height:1.4;word-break:keep-all}
+.fb.good{color:var(--teal-d)}.fb.bad{color:var(--ruby)}
+
+footer{background:var(--navy-s);padding:8px 12px;text-align:center;font-size:15px;color:var(--navy);line-height:1.35;word-break:keep-all}
+footer span{display:inline-block;margin:0 6px}
+.toast{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);background:var(--ink);color:#fff;font-family:"Jua",sans-serif;font-size:20px;padding:12px 26px;border-radius:999px;opacity:0;pointer-events:none;transition:opacity .3s;z-index:99;white-space:nowrap}
+.toast.on{opacity:1}
+.fx{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:98}
+.conf{position:absolute;top:-20px;width:13px;height:13px;animation:fall linear forwards}
+.spk{position:absolute;font-size:26px;transform:translate(-50%,-50%);animation:spk .7s ease-out forwards}
+.shake{animation:shake .4s}
+@keyframes fall{to{transform:translateY(110vh) rotate(720deg)}}
+@keyframes spk{to{transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.3);opacity:0}}
+@keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
+@media (min-width:900px){ .gwrap{grid-template-columns:minmax(0,1fr) 380px;align-items:start} }
+@media (max-width:560px){
+  .msg{min-height:calc(4.05em + 18px)}
+  .share{font-size:16px;padding:6px 14px;min-height:50px}
+  .card .d{display:none}
+  .card{grid-template-columns:1fr;justify-items:center;text-align:center;padding:6px 4px;font-size:16px}
+  .card svg{grid-row:auto}
+  .btns{grid-template-columns:1fr 1fr}
+  .btns .reset{grid-column:span 2}
+}
+</style>
+</head>
+<body>
+<header><div class="head-in">
+  <div class="titles"><div class="brand">어게인 실험과학 수학학원</div><h1>멘델의 완두콩</h1></div>
+  <button class="bbtn orange share" id="share">공유하기</button>
+</div></header>
+
+<nav>
+  <button class="tab on" data-t="0">외울 문장<span class="star">★</span></button>
+  <button class="tab" data-t="1">완두콩 교배 게임<span class="star">★</span></button>
+  <button class="tab" data-t="2">OX 퀴즈<span class="star">★</span></button>
+</nav>
+
+<main>
+<!-- 1 외울 문장 -->
+<section class="panel on">
+  <div class="memo">
+    <div class="msg" id="m0" aria-live="polite"></div>
+    <div class="sent" id="sent"><span class="term">분리의 법칙</span> : 부모가 가진 한 쌍의 <span class="slot"></span>가 <span class="slot"></span>, 자손에게 <span class="slot"></span> 전해지는 것</div>
+    <div class="words" id="words"></div>
+    <div class="read" id="read">
+      <p>소리 내어 세 번 읽어요</p>
+      <div class="dots" id="dots"><button>1번</button><button>2번</button><button>3번</button></div>
+    </div>
+    <div class="row"><button class="bbtn white" id="r0">다시 하기</button></div>
+  </div>
+</section>
+
+<!-- 2 완두콩 교배 게임 -->
+<section class="panel">
+  <div class="msg" id="m1" aria-live="polite"></div>
+  <div class="gwrap">
+    <div class="lab">
+      <div class="box">
+        <p class="h2">완두 바구니 <small>— 눌러서 부모로 골라요</small></p>
+        <div class="bank" id="bank"></div>
+      </div>
+      <div class="box">
+        <div class="pair">
+          <button class="slotbox" id="p0"></button>
+          <div class="times">×</div>
+          <button class="slotbox" id="p1"></button>
+        </div>
+        <div class="btns" style="margin-top:10px">
+          <button class="bbtn green" id="cross">교배하기 🌱</button>
+          <button class="bbtn orange" id="more" disabled>더 많이 심기</button>
+          <button class="bbtn white reset" id="reset">처음부터</button>
+        </div>
+        <p class="tip">교배 : 암수를 짝지어 자손을 얻는 것 · 완두는 꽃가루를 옮겨 교배해요</p>
+      </div>
+      <div class="field">
+        <div class="pod" id="pod"></div>
+        <div class="peas" id="peas"></div>
+        <div class="more" id="peamore"></div>
+      </div>
+      <div class="stat">
+        <div><div class="k">둥근 완두</div><div class="v" id="nR">0</div></div>
+        <div><div class="k">주름진 완두</div><div class="v" id="nW">0</div></div>
+        <div class="r"><div class="k">둥근 : 주름진</div><div class="v" id="rt">—</div></div>
+      </div>
+      <div class="ratio"><i class="a" id="ba" style="width:50%"></i><i class="b" id="bb" style="width:50%"></i></div>
+    </div>
+    <div class="notes" id="notes"></div>
+  </div>
+</section>
+
+<!-- 3 OX 퀴즈 -->
+<section class="panel">
+  <div class="quiz">
+    <div class="score"><span id="qn">1</span> / 5 번째 문제 · 점수 <b id="sc">0</b>점</div>
+    <div class="qq" id="q"></div>
+    <div class="ox" id="ox"><button class="o" data-a="O">O</button><button class="x" data-a="X">X</button></div>
+    <div class="fb" id="qfb"></div>
+    <div class="row"><button class="bbtn" id="next" style="display:none">다음 문제</button></div>
+  </div>
+</section>
+</main>
+
+<footer><span>어게인 실험과학 수학학원</span><span>교육문의 010.2976.5774</span></footer>
+<div class="fx" id="fx"></div>
+<div class="toast" id="toast">주소가 복사됐어요</div>
+
+<script>
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+
+/* ---------- 소리 ---------- */
+let ac;
+function audio(){ if(!ac){const A=window.AudioContext||window.webkitAudioContext; if(A) ac=new A();} if(ac&&ac.state==='suspended') ac.resume(); return ac; }
+function tone(freq,dur,vol,type='sine',when=0,freqEnd){
+  const a=audio(); if(!a) return;
+  const o=a.createOscillator(), g=a.createGain(), t=a.currentTime+when;
+  o.type=type; o.frequency.setValueAtTime(freq,t); if(freqEnd) o.frequency.exponentialRampToValueAtTime(freqEnd,t+dur);
+  g.gain.setValueAtTime(0.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+0.02); g.gain.exponentialRampToValueAtTime(0.0001,t+dur);
+  o.connect(g).connect(a.destination); o.start(t); o.stop(t+dur+0.05);
+}
+const cheer=()=>[523,659,784,1047].forEach((f,i)=>tone(f,.22,.2,'triangle',i*.09));
+const ding=()=>[784,1047].forEach((f,i)=>tone(f,.16,.18,'triangle',i*.08));
+const boo=()=>tone(220,.3,.14,'sawtooth',0,140);
+const tick=()=>tone(520,.09,.07,'triangle');
+const popS=()=>tone(660,.08,.08,'sine',0,990);
+
+/* ---------- 보상 ---------- */
+function confetti(n=40){
+  const cols=['#13294b','#0e9f97','#ff7b1c','#ffd84d','#7cbf4a','#f3cd47'];
+  for(let i=0;i<n;i++){ const d=document.createElement('div'); d.className='conf';
+    d.style.left=Math.random()*100+'vw'; d.style.background=cols[i%6]; d.style.borderRadius=i%2?'50%':'3px';
+    d.style.animationDuration=1+Math.random()*.8+'s'; d.style.animationDelay=Math.random()*.2+'s';
+    $('#fx').appendChild(d); setTimeout(()=>d.remove(),2200); }
+}
+function sparkle(el){
+  const r=el.getBoundingClientRect();
+  for(let i=0;i<10;i++){ const s=document.createElement('div'), a=i/10*2*Math.PI, d=46+Math.random()*34;
+    s.className='spk'; s.textContent='✦'; s.style.color=i%2?'#ff7b1c':'#0e9f97';
+    s.style.left=r.left+r.width/2+'px'; s.style.top=r.top+r.height/2+'px';
+    s.style.setProperty('--dx',Math.cos(a)*d+'px'); s.style.setProperty('--dy',Math.sin(a)*d+'px');
+    $('#fx').appendChild(s); setTimeout(()=>s.remove(),750); }
+}
+const shake=el=>{ el.classList.remove('shake'); void el.getBoundingClientRect(); el.classList.add('shake'); };
+const shuffle=a=>{ a=[...a]; for(let i=a.length-1;i>0;i--){ const j=Math.random()*(i+1)|0; [a[i],a[j]]=[a[j],a[i]]; } return a; };
+const tabs=$$('.tab'), panels=$$('.panel');
+function done(i){ if(tabs[i].classList.contains('done')) return; tabs[i].classList.add('done'); confetti(); cheer(); }
+function msg(id,html,cls=''){ const m=$(id); m.className='msg '+cls; m.innerHTML=html; }
+
+/* ---------- 탭 (주소 끝이 #game 이면 교배 게임부터 — 8쪽 QR) ---------- */
+function openTab(t){ tabs.forEach((x,i)=>x.classList.toggle('on',i===t)); panels.forEach((p,i)=>p.classList.toggle('on',i===t)); }
+tabs.forEach(b=>b.onclick=()=>{ openTab(+b.dataset.t); audio(); });
+if(location.hash==='#game') openTab(1);
+
+/* ---------- 공유 ---------- */
+$('#share').onclick=async()=>{
+  const url=location.href;
+  if(navigator.share){ try{ await navigator.share({title:document.title,url}); return; }catch(e){ if(e.name==='AbortError') return; } }
+  try{ await navigator.clipboard.writeText(url); }
+  catch(e){ const t=document.createElement('textarea'); t.value=url; document.body.appendChild(t); t.select(); document.execCommand('copy'); t.remove(); }
+  const el=$('#toast'); el.classList.add('on'); setTimeout(()=>el.classList.remove('on'),1800);
+};
+
+/* ---------- 1 외울 문장 ---------- */
+const SHINT=['부모에게서 물려받아 특징을 정하는 것은? 11월 2주차에 배운 낱말이에요.','한 쌍이 둘로 갈라지는 것을 뭐라고 할까요?','Aa 부모는 A와 a를 둘 다 줄까요, 하나만 줄까요?'];
+let si=0, reads=0;
+function slots0(){ $$('#sent .slot').forEach((s,i)=>{ s.textContent=i<si?SLOTS[i]:' '; s.className='slot'+(i<si?' ok':i===si?' cur':''); }); }
+function start0(){
+  si=0; reads=0; $('#sent').classList.remove('solved'); $('#read').classList.remove('on'); $('#words').style.display='';
+  $$('#dots button').forEach(b=>b.classList.remove('on'));
+  $('#words').innerHTML=shuffle(WORDS).map(w=>`<button class="bbtn white">${w}</button>`).join('');
+  $$('#words button').forEach(b=>b.onclick=()=>pick0(b));
+  slots0(); msg('#m0','외울 문장의 빈칸을 채워요. <b>주황 빈칸</b>에 들어갈 낱말을 눌러요.');
+}
+function pick0(b){
+  if(b.textContent!==SLOTS[si]){ shake(b); boo(); msg('#m0','아쉬워요. '+SHINT[si],'warn'); return; }
+  b.classList.add('on'); b.disabled=true; si++; slots0();
+  if(si<SLOTS.length){ ding(); msg('#m0',`딩동댕! 이제 ${si+1}번째 빈칸이에요.`,'good'); return; }
+  $('#words').style.display='none'; $('#sent').classList.add('solved'); $('#read').classList.add('on');
+  msg('#m0','딩동댕! 외울 문장을 완성했어요. 큰 소리로 세 번 읽고, 읽을 때마다 동그라미를 눌러요.','good');
+  sparkle($('#sent')); done(0);
+}
+$$('#dots button').forEach(b=>b.onclick=()=>{
+  if(reads>=3) return; $$('#dots button')[reads++].classList.add('on');
+  if(reads<3){ ding(); return; }
+  sparkle($('#dots')); confetti(14); cheer();
+  msg('#m0','세 번 다 읽었어요! 이제 「완두콩 교배 게임」에서 멘델처럼 이 법칙을 직접 찾아봐요.','good');
+});
+$('#r0').onclick=()=>{ start0(); tick(); };
+start0();
+
+/* ---------- 2 완두콩 교배 게임 ---------- */
+/* 완두 그림 : 둥근 완두 · 주름진 완두 */
+const WPATH=(()=>{ let d=''; for(let i=0;i<=72;i++){ const a=i/72*2*Math.PI, r=15.2+1.9*Math.sin(a*9)+.8*Math.sin(a*4); d+=(i?'L':'M')+(20+r*Math.cos(a)).toFixed(1)+' '+(20+r*Math.sin(a)).toFixed(1); } return d+'Z'; })();
+function pea(round){
+  return round
+   ? '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="#f3cd47" stroke="#b08a1c" stroke-width="2"/><ellipse cx="14" cy="13.5" rx="5" ry="3.2" fill="#fff" opacity=".6"/></svg>'
+   : `<svg viewBox="0 0 40 40" aria-hidden="true"><path d="${WPATH}" fill="#e3bb3a" stroke="#8c6a12" stroke-width="2" stroke-linejoin="round"/><path d="M12 16q5 3 9-1M17 25q5-3 10 1M14 21q3 1 5 0" fill="none" stroke="#8c6a12" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+}
+const POD='<svg viewBox="0 0 360 130" aria-hidden="true"><path d="M20 72 Q180 152 340 62 Q190 98 20 72Z" fill="#7cbf4a" stroke="#4f8f2a" stroke-width="4"/><g class="lid"><path d="M20 72 Q180 -4 340 62 Q190 44 20 72Z" fill="#94d061" stroke="#4f8f2a" stroke-width="4"/></g><path d="M340 62 q12 -8 14 -24" fill="none" stroke="#4f8f2a" stroke-width="4" stroke-linecap="round"/></svg>';
+
+/* 바구니 : 유전자 글자는 숨겨 두고, 추리 노트 ③에서 밝힌다 (RR 늘 둥근 · rr 늘 주름진 · Rr 1대) */
+const BANK=[
+  {k:'RR',n:'늘 둥근 완두',d:'몇 대를 길러도 둥근 완두만 맺어요',r:true,on:true},
+  {k:'rr',n:'늘 주름진 완두',d:'몇 대를 길러도 주름진 완두만 맺어요',r:false,on:true},
+  {k:'Rr',n:'1대 완두',d:'늘 둥근 × 늘 주름진에서 나온 완두',r:true,on:false}
+];
+const byK=k=>BANK.find(b=>b.k===k);
+const FIRST=20, MORE=200, SHOW=40;
+let P=[null,null], F={key:null,R:0,W:0,shown:[]}, S={}, f2=0;
+
+function drawBank(){
+  $('#bank').innerHTML=BANK.map(b=>`<button class="card${b.on?'':' hide'}${b._new?' new':''}" data-k="${b.k}">${b._new?'<span class="tag">새로!</span>':''}${pea(b.r)}<span>${b.n}</span><span class="d">${b.d}</span></button>`).join('');
+  $$('#bank .card').forEach(c=>c.onclick=()=>choose(c.dataset.k));
+  BANK.forEach(b=>b._new=false);
+  markPick();
+}
+function markPick(){
+  $$('#bank .card').forEach(c=>c.classList.toggle('pick',P.includes(c.dataset.k)));
+  [0,1].forEach(i=>{ const el=$('#p'+i), b=P[i]&&byK(P[i]);
+    el.classList.toggle('full',!!b);
+    el.innerHTML=b?`${pea(b.r)}<span>${b.n}</span><span class="x">다시 누르면 빠져요</span>`:`부모 ${i?'②':'①'}<br>비어 있어요`; });
+}
+function choose(k){
+  tick(); audio();
+  const i=P[0]===null?0:P[1]===null?1:-1;
+  if(i<0){ msg('#m1','부모 자리가 다 찼어요. 바꾸려면 <b>부모 ①</b>이나 <b>부모 ②</b>를 눌러 빼요.','warn'); return; }
+  P[i]=k; markPick();
+  if(P[0]&&P[1]) msg('#m1',`<b>${byK(P[0]).n}</b> × <b>${byK(P[1]).n}</b> — 이제 <b>교배하기 🌱</b>를 눌러요!`);
+  else msg('#m1','좋아요! 부모가 될 완두를 하나 더 골라요. (같은 완두를 두 번 골라도 돼요)');
+}
+[0,1].forEach(i=>$('#p'+i).onclick=()=>{ if(!P[i]) return; P[i]=null; tick(); markPick(); });
+
+const pairKey=()=>[P[0],P[1]].sort().join('×');
+const give=k=>k[Math.random()*2|0];                  // 부모는 한 쌍 가운데 하나를 골라 줌 (분리의 법칙)
+function grow(n){
+  for(let i=0;i<n;i++){ const round=(give(P[0])+give(P[1])).includes('R'); round?F.R++:F.W++; if(F.shown.length<SHOW) F.shown.push(round); }
+}
+function drawField(fresh){
+  const pod=$('#pod');
+  if(fresh){ pod.innerHTML=POD; pod.style.display=''; pod.classList.remove('open'); $('#peas').innerHTML='';
+    setTimeout(()=>pod.classList.add('open'),60);
+    setTimeout(()=>{ pod.style.display='none'; $('#peas').innerHTML=F.shown.map((r,i)=>pea(r).replace('<svg ',`<svg style="animation-delay:${i*35}ms" `)).join(''); for(let i=0;i<6;i++) setTimeout(popS,i*90); },650);
+  }
+  const t=F.R+F.W;
+  $('#peamore').textContent=t>F.shown.length?`그림은 ${F.shown.length}알만 보여요 · 모두 ${t}알`:'';
+  $('#nR').textContent=F.R; $('#nW').textContent=F.W;
+  $('#rt').textContent=!t?'—':(F.W&&F.R)?(F.R/F.W).toFixed(1)+' : 1':F.R+' : '+F.W;
+  $('#ba').style.width=(t?F.R/t*100:50)+'%'; $('#bb').style.width=(t?F.W/t*100:50)+'%';
+}
+$('#cross').onclick=()=>{
+  audio();
+  if(!(P[0]&&P[1])){ shake($('#cross')); boo(); msg('#m1','부모 완두 두 개를 먼저 골라요. 바구니에서 완두를 눌러요.','warn'); return; }
+  F={key:pairKey(),R:0,W:0,shown:[]}; grow(FIRST); drawField(true); $('#more').disabled=false;
+  $('.stat').scrollIntoView({behavior:'smooth',block:'nearest'});
+  if(F.key==='RR×rr'){ S.f1=true; const c=byK('Rr'); if(!c.on){ c.on=true; c._new=true; drawBank(); } }
+  if(F.key==='Rr×Rr'){ S.f2=true; f2=F.R+F.W; }
+  setTimeout(()=>{ talk(false); drawNotes(); },750);
+};
+$('#more').onclick=()=>{
+  if(!F.key) return; audio(); popS();
+  grow(MORE); drawField(false);
+  if(F.key==='Rr×Rr') f2=F.R+F.W;
+  talk(true); drawNotes();
+};
+$('#reset').onclick=()=>{ tick(); P=[null,null]; F={key:null,R:0,W:0,shown:[]}; S={}; f2=0; byK('Rr').on=false;
+  $('#peas').innerHTML=''; $('#pod').innerHTML=POD; $('#pod').style.display=''; $('#more').disabled=true; drawField(false); drawBank(); drawNotes(); start1(); };
+
+function talk(more){
+  const t=F.R+F.W;
+  if(more){ msg('#m1',`모두 ${t}알을 심었어요. 둥근 : 주름진이 <b>${F.W&&F.R?(F.R/F.W).toFixed(1)+' : 1':'—'}</b>이에요. 수가 많을수록 어떤 비에 가까워지나요?`,'good'); return; }
+  msg('#m1',{
+    'RR×rr':'1대 완두가 나왔어요! 바구니에 <b>1대 완두</b>가 생겼어요. 1대 완두는 어떤 모양인가요? 오른쪽 <b>추리 노트</b>를 풀어요.',
+    'Rr×Rr':'앗, 주름진 완두가 다시 나타났어요! 1대 완두는 모두 둥글었는데, 어디서 왔을까요? <b>추리 노트</b>를 봐요.',
+    'RR×RR':'늘 둥근 완두끼리는 둥근 완두만 나와요. 추리 노트의 할 일을 해 볼까요?',
+    'rr×rr':'늘 주름진 완두끼리는 주름진 완두만 나와요. 추리 노트의 할 일을 해 볼까요?',
+    'RR×Rr':'둥근 완두만 나왔어요. 늘 둥근 완두가 둥근 유전자만 주기 때문이에요.',
+    'Rr×rr':'둥근 완두와 주름진 완두가 거의 반반 나왔어요. 추리 노트의 할 일도 해 봐요.'
+  }[F.key],'good');
+}
+
+/* 추리 노트 : ① 1대 → 우성 · 열성  ② 2대 → 숨어 있던 열성 · 3 : 1  ③ 유전자 카드 → 분리의 법칙 */
+function q(text,opts,key){ return `<div class="q">${text}</div><div class="ch">${opts.map(o=>`<button class="bbtn white" data-q="${key}" data-a="${o}">${o}</button>`).join('')}</div>`; }
+function pun(){
+  const f=S.cells||0;
+  return '<div class="pun"><div></div><div class="hd"><span><small>부모 ①이 줌</small>R</span></div><div class="hd"><span><small>부모 ①이 줌</small>r</span></div>'+
+    ['R','r'].map((s,ri)=>`<div class="hd"><span><small>부모 ②</small>${s}</span></div>`+[0,1].map(ci=>{
+      const i=ri*2+ci, g=[ci?'r':'R',s].sort().join(''), round=g.includes('R');   // 대문자를 앞에 (Rr)
+      return i<f?`<button class="ok" disabled>${pea(round)}${g}<span>${round?'둥근':'주름진'}</span></button>`:`<button data-i="${i}" aria-label="${i+1}번 칸">?</button>`;
+    }).join('')).join('')+'</div>';
+}
+function drawNotes(){
+  const n1=!S.f1?['lock','<span class="todo">할 일 : <b>늘 둥근 완두</b> × <b>늘 주름진 완두</b>를 교배해 봐요.</span>']
+    :!S.a1?['cur',q('1대 완두는 모두 어떤 모양이었나요?',['둥근 모양','주름진 모양','반반 섞여서'],'a1')]
+    :!S.b1?['cur','<div class="ans">1대 완두는 모두 둥근 모양이에요.</div>'+q('1대 완두는 둥근 유전자와 주름진 유전자를 하나씩 받았는데, 겉으로는 둥근 모양만 보여요. 둥근 모양은?',['우성','열성'],'b1')]
+    :['ok','<div class="ans">1대 완두는 모두 둥글어요.<br>둥근 모양 = <b>우성</b> · 주름진 모양 = <b>열성</b></div><div>그럼 주름진 특징은 사라졌을까요?</div>'];
+  const n2=!S.b1?['lock','①을 풀면 열려요.']
+    :!S.f2?['cur','<span class="todo">할 일 : 바구니의 <b>1대 완두</b>를 부모 ① · ② 모두에 골라 교배해 봐요.</span>']
+    :!S.a2?['cur',q('주름진 완두가 다시 나왔어요! 1대 완두 속에서 주름진 특징은?',['사라졌었다','숨어 있었다'],'a2')]
+    :f2<MORE?['cur',`<div class="ans">주름진 특징은 1대 완두 속에 <b>숨어 있었어요</b>.</div><span class="todo">할 일 : <b>더 많이 심기</b>를 눌러 200알 넘게 심어 봐요. (지금 ${f2}알)</span>`]
+    :!S.b2?['cur','<div class="ans">주름진 특징은 1대 완두 속에 숨어 있었어요.</div>'+q(`${f2}알을 심었어요. 둥근 : 주름진은 약 얼마인가요?`,['1 : 1','3 : 1','1 : 3'],'b2')]
+    :['ok','<div class="ans">주름진 특징은 숨어 있다가 다시 나타나요.<br>2대에서 둥근 : 주름진 = 약 <b>3 : 1</b></div>'];
+  const n3=!S.b2?['lock','②를 풀면 열려요.']
+    :!S.a3?['cur','<div>1대 완두는 둥근 유전자 <b>R</b>와 주름진 유전자 <b>r</b>를 한 쌍으로 가졌어요.</div>'+q('부모 완두는 자손에게 한 쌍 가운데 몇 개를 줄까요?',['둘 다','하나씩'],'a3')]
+    :(S.cells||0)<4?['cur',`<div class="ans">한 쌍이 나뉘어, 하나씩 줘요!</div><div>빈칸을 차례로 눌러 자손을 만들어요. (${S.cells||0} / 4)</div>${pun()}`]
+    :['ok',`${pun()}<div class="big">둥근 3 : 주름진 1 — 게임 결과와 같아요!<br><b>분리의 법칙</b> : 부모가 가진 한 쌍의 유전자가 나뉘어, 자손에게 하나씩 전해지는 것</div><div class="mendel">멘델의 실제 기록 (1865년 발표)<br>둥근 <b>5474</b>개 : 주름진 <b>1850</b>개 = 약 <b>3 : 1</b></div>`];
+  const T=['1대 완두는 어떤 모양일까?','주름진 특징은 어디로 갔을까?','왜 3 : 1일까?'];
+  $('#notes').innerHTML='<p class="h2" style="margin:0">추리 노트 <small>— 멘델처럼 규칙을 찾아요</small></p>'+[n1,n2,n3].map((n,i)=>`<div class="note ${n[0]}"><div class="nt"><span class="no">${n[0]==='ok'?'✓':i+1}</span>${T[i]}</div>${n[1]}</div>`).join('');
+  $$('#notes [data-q]').forEach(b=>b.onclick=()=>answer(b));
+  $$('#notes .pun button[data-i]').forEach(b=>b.onclick=()=>fill(b));
+}
+const RIGHT={a1:'둥근 모양',b1:'우성',a2:'숨어 있었다',b2:'3 : 1',a3:'하나씩'};
+const WRONG={
+  a1:'아래 완두 그림을 다시 봐요. 주름진 완두가 있나요?',
+  b1:'유전자 한 쌍이 서로 다를 때, 겉으로 나타나는 특징을 무엇이라고 했지요?',
+  a2:'사라졌다면 1대 완두끼리 교배했을 때 주름진 완두가 나올 수 없어요.',
+  b2:'아래 가운데 \'둥근 : 주름진\' 칸의 숫자를 봐요.',
+  a3:'둘 다 주면 자손의 유전자가 네 개가 돼요. 유전자는 늘 한 쌍(두 개)이에요.'
+};
+const NEXT={
+  a1:'맞아요! 그럼 둥근 모양은 우성일까요, 열성일까요?',
+  b1:'딩동댕! 둥근 모양이 우성이에요. 이번엔 바구니의 <b>1대 완두</b> 두 개를 골라 교배해 봐요!',
+  a2:'맞아요! 주름진 유전자는 숨어 있었어요. 이제 <b>더 많이 심기</b>를 눌러 수를 늘려 봐요.',
+  b2:'딩동댕! 약 3 : 1이에요. 왜 3 : 1일까요? 추리 노트 ③에서 밝혀요.',
+  a3:'맞아요! 한 쌍이 나뉘어 하나씩 줘요. 빈칸 네 개를 눌러 자손을 만들어 봐요.'
+};
+function answer(b){
+  const k=b.dataset.q;
+  if(b.dataset.a!==RIGHT[k]){ shake(b); boo(); msg('#m1','아쉬워요. '+WRONG[k],'warn'); return; }
+  S[k]=true; ding(); sparkle(b); msg('#m1',NEXT[k],'good'); drawNotes();
+}
+function fill(b){
+  if(+b.dataset.i!==(S.cells||0)){ shake(b); boo(); msg('#m1','왼쪽 위 칸부터 차례로 눌러요.','warn'); return; }
+  S.cells=(S.cells||0)+1; popS(); drawNotes();
+  if(S.cells<4){ msg('#m1','위(부모 ①)와 왼쪽(부모 ②)에서 하나씩 받은 유전자를 모아요. 다음 칸을 눌러요.','good'); return; }
+  msg('#m1','네 칸 중 셋은 둥근, 하나는 주름진 완두! 그래서 3 : 1이에요. 멘델이 찾은 <b>분리의 법칙</b>을 완성했어요!','good');
+  sparkle($('#notes')); done(1);
+}
+function start1(){ msg('#m1','멘델처럼 완두를 교배해 규칙을 찾아요. 먼저 바구니에서 <b>늘 둥근 완두</b>와 <b>늘 주름진 완두</b>를 골라요.'); }
+$('#pod').innerHTML=POD; drawBank(); drawField(false); drawNotes(); start1();
+
+/* ---------- 3 OX 퀴즈 ---------- */
+let qi=0, score=0;
+function showQ(){
+  $('#ox').style.display=''; $('#qn').textContent=qi+1; $('#sc').textContent=score; $('#q').textContent=QS[qi][0];
+  $('#qfb').textContent=''; $('#qfb').className='fb'; $('#next').style.display='none'; $$('#ox button').forEach(b=>b.disabled=false);
+}
+$$('#ox button').forEach(b=>b.onclick=()=>{
+  const [,ans,why]=QS[qi], ok=b.dataset.a===ans; $$('#ox button').forEach(x=>x.disabled=true);
+  if(ok){ score++; ding(); sparkle(b); confetti(14); } else boo();
+  $('#sc').textContent=score; $('#qfb').className='fb '+(ok?'good':'bad');
+  $('#qfb').textContent=(ok?'딩동댕! ':'아쉬워요. 정답은 '+ans+'예요. ')+why;
+  $('#next').textContent=qi<QS.length-1?'다음 문제':'결과 보기'; $('#next').style.display='';
+});
+$('#next').onclick=()=>{
+  if(qi===QS.length){ qi=0; score=0; showQ(); return; }
+  if(++qi<QS.length){ showQ(); return; }
+  $('#q').textContent=`${QS.length}문제 중 ${score}문제를 맞혔어요!`; $('#ox').style.display='none'; $('#qfb').className='fb good';
+  $('#qfb').textContent=score===QS.length?'완벽해요! 다섯 문제를 모두 맞혔어요.':score>=3?'잘했어요! 틀린 문제는 앞의 활동으로 다시 확인해 봐요.':'괜찮아요. 앞의 활동을 다시 해 보고 또 도전해요!';
+  $('#next').textContent='다시 하기'; if(score===QS.length) done(2);
+};
+showQ();
+</script>
+</body>
+</html>
