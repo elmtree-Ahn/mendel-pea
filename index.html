@@ -46,20 +46,20 @@ button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;touch-
 .bbtn:disabled{opacity:.4;cursor:default}
 
 header{position:sticky;top:0;z-index:30;background:#fff;box-shadow:0 3px 0 var(--line);padding:8px 16px}
-.head-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.head-in{max-width:1366px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
 .titles{flex:1;min-width:0}
 .brand{font-size:15px;color:var(--sub)}
 h1{margin:0;font-weight:400;font-size:clamp(21px,4vw,32px);color:var(--navy);line-height:1.15;word-break:keep-all}
 .share{font-size:18px;min-height:52px;padding:6px 20px;flex:none}
 
-nav{max-width:1180px;width:100%;margin:10px auto 0;padding:0 12px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+nav{order:3;flex:1 1 100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .tab{position:relative;min-height:58px;border-radius:18px;background:var(--navy-s);font-size:clamp(16px,2.2vw,21px);line-height:1.15;padding:4px;
   border:3px solid transparent;word-break:keep-all;text-align:center;color:var(--navy)}
 .tab.on{background:var(--navy);color:#fff}
 .tab .star{position:absolute;top:-10px;right:-2px;font-size:22px;color:var(--orange);display:none}
 .tab.done .star{display:block;animation:pop .5s}
 
-main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:10px 12px 14px;overflow-x:hidden;overflow-x:clip}
+main{flex:1;max-width:1366px;width:100%;margin:0 auto;padding:10px 12px 14px;overflow-x:hidden;overflow-x:clip}
 .panel{display:none}
 .panel.on{display:block;animation:fadein .3s}
 .msg{background:var(--navy-s);border-radius:18px;padding:9px 16px;font-size:clamp(17px,2.3vw,21px);line-height:1.35;word-break:keep-all;min-height:calc(2.7em + 18px)}
@@ -87,8 +87,57 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:10px 12px 14px;ove
 .dots button{width:74px;height:74px;border-radius:50%;border:4px solid var(--mid);background:#fff;font-family:"Jua",sans-serif;font-size:20px;color:var(--sub);box-shadow:0 4px 0 var(--mid);line-height:1.1}
 .dots button.on{background:var(--orange);border-color:var(--orange-d);color:#fff;box-shadow:0 4px 0 var(--orange-d);animation:pop .4s}
 
+/* 2-0 준비 운동 */
+#warm{display:grid;gap:12px;max-width:1180px;margin:0 auto}
+#warm[hidden],#play[hidden]{display:none}
+.whead{display:flex;align-items:center;gap:10px}
+.wsteps{flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.wsteps span{font-family:"Jua",sans-serif;font-size:clamp(15px,1.8vw,21px);text-align:center;padding:8px 6px;border-radius:14px;background:var(--navy-s);color:var(--sub);word-break:keep-all;line-height:1.2}
+.wsteps span.on{background:var(--navy);color:#fff}
+.wsteps span.ok{background:var(--teal-s);color:var(--teal-d)}
+.skip{font-size:16px;min-height:48px;padding:4px 14px;flex:none}
+.wbox{border:3px solid #d9ecc6;border-radius:24px;background:linear-gradient(#fbfdf7,#eef6e2);min-height:330px;padding:18px 14px;
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:12px clamp(14px,2.6vw,40px)}
+.wnav{min-height:70px;align-items:center}
+.wnav .bbtn{font-size:clamp(20px,2.2vw,25px);min-width:200px;display:inline-flex;align-items:center;justify-content:center;gap:8px}
+.wnav .bbtn svg{width:42px;height:42px}
+.wcol{display:flex;flex-direction:column;align-items:center;gap:8px}
+.wpair{display:flex;gap:12px}
+.wname{font-family:"Jua",sans-serif;font-size:clamp(19px,2.1vw,25px);color:var(--navy);text-align:center;word-break:keep-all;line-height:1.2}
+.wname small{display:block;font-size:.72em;color:var(--sub)}
+.wpea{width:clamp(96px,11vw,140px);height:clamp(96px,11vw,140px);display:grid;place-items:center}
+.wpea svg{width:100%;height:100%}
+.wpea.qm{border:4px dashed var(--mid);border-radius:50%;font-family:"Jua",sans-serif;font-size:clamp(44px,5vw,64px);color:var(--gray)}
+.wpea.s{width:clamp(56px,6vw,78px);height:clamp(56px,6vw,78px)}
+.wpea.s.qm{font-size:clamp(28px,3vw,38px);border-width:3px}
+.wpea.new{animation:pop .5s}
+.sign{font-family:"Jua",sans-serif;font-size:clamp(36px,4vw,52px);color:var(--pod-d)}
+.rule{flex:1 1 100%;max-width:880px;background:#fff;border:3px solid var(--teal);border-radius:18px;padding:10px 16px;text-align:center;
+  font-family:"Jua",sans-serif;font-size:clamp(19px,2.2vw,26px);line-height:1.45;color:var(--navy);word-break:keep-all}
+.rule b{font-weight:400;color:var(--orange-d)}
+.gcard{position:relative;width:clamp(92px,9.6vw,124px);height:clamp(122px,12.8vw,164px);border-radius:18px;background:#fff;border:3px solid #c9d3e0;box-shadow:0 5px 0 #c9d3e0;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;padding:16px 4px 4px;--band:#c9d3e0}
+.gcard::before{content:"";position:absolute;top:0;left:0;right:0;height:16px;background:var(--band)}
+.gcard b{font-family:Arial,"Helvetica Neue",sans-serif;font-weight:700;font-size:clamp(54px,5.8vw,74px);line-height:1;color:var(--navy)}
+.gcard small{font-family:"Jua",sans-serif;font-size:clamp(13px,1.4vw,17px);color:var(--sub);margin-top:6px;word-break:keep-all;text-align:center;line-height:1.15}
+.gcard.gR{--band:var(--pea)} .gcard.gr{--band:#9a7b2a}
+.gcard.back{background:var(--navy);border-color:var(--navy-d);box-shadow:0 5px 0 var(--navy-d);--band:var(--navy-d)}
+.gcard.back b{color:#fff;font-family:"Jua",sans-serif;font-weight:400}
+.gcard.back small{color:#c9d6ea}
+.gcard.empty{background:rgba(255,255,255,.6);border:3px dashed var(--mid);box-shadow:none;--band:transparent}
+.gcard.empty b{color:var(--gray);font-family:"Jua",sans-serif;font-weight:400}
+.gcard.flip{animation:flip .4s}
+.gcard.used{opacity:.3}
+.gcard.pick{border-color:var(--orange);box-shadow:0 5px 0 var(--orange-d);background:var(--orange-s)}
+.gcard:not(:disabled):not(.back):not(.empty):active{transform:translateY(3px)}
+.wpair.sm .gcard{width:clamp(78px,8vw,104px);height:clamp(104px,10.6vw,138px)}
+.wpair.sm .gcard b{font-size:clamp(46px,4.8vw,62px)}
+@keyframes flip{0%{transform:scaleX(0)}100%{transform:scaleX(1)}}
+
 /* 2 완두콩 교배 게임 */
 .gwrap{display:grid;gap:12px;margin-top:10px}
+.hrow{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.mini{font-size:15px;min-height:40px;padding:2px 14px;box-shadow:0 3px 0 var(--mid)}
 .lab{display:grid;gap:8px;min-width:0}
 .h2{font-family:"Jua",sans-serif;font-size:clamp(18px,2.4vw,22px);color:var(--navy);margin:0 0 6px}
 .h2 small{font-size:.78em;color:var(--sub)}
@@ -101,6 +150,7 @@ main{flex:1;max-width:1180px;width:100%;margin:0 auto;padding:10px 12px 14px;ove
 .card.pick{border-color:var(--orange);box-shadow:0 4px 0 var(--orange-d);background:var(--orange-s)}
 .card.hide{visibility:hidden}
 .card.new{animation:pop .6s}
+.gk{font-style:normal;font-family:Arial,"Helvetica Neue",sans-serif;font-weight:700;font-size:.82em;color:var(--navy);background:#fff;border:2px solid var(--mid);border-radius:8px;padding:0 5px;white-space:nowrap}
 .card .tag{position:absolute;top:-11px;right:-4px;background:var(--orange);color:#fff;font-size:14px;padding:2px 9px;border-radius:999px}
 .pair{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
 .slotbox{min-height:74px;border:3px dashed var(--mid);border-radius:18px;display:flex;align-items:center;justify-content:center;gap:6px;flex-direction:row;
@@ -181,7 +231,75 @@ footer span{display:inline-block;margin:0 6px}
 @keyframes pop{0%{transform:scale(.6);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
 @keyframes fadein{from{opacity:0}to{opacity:1}}
 @keyframes shake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-9px)}40%,80%{transform:translateX(9px)}}
-@media (min-width:900px){ .gwrap{grid-template-columns:minmax(0,1fr) 380px;align-items:start} }
+@media (min-width:900px){ .gwrap{grid-template-columns:minmax(0,1fr) 400px;align-items:start} }
+/* 가로 아이패드 (1024~1366px) : 탭을 머리줄로 올리고 글자 · 단추를 키워요 */
+@media (min-width:900px) and (orientation:landscape){
+  header{padding:6px 18px}
+  .head-in{flex-wrap:nowrap}
+  .titles{flex:none}
+  nav{order:0;flex:1 1 auto;max-width:720px;margin:0 auto}
+  .tab{min-height:54px;font-size:22px}
+  main{padding:12px 18px 14px}
+  .msg{font-size:22px;padding:9px 18px}
+  .sent{font-size:36px}
+  .sent.solved{font-size:44px}
+  .words .bbtn{font-size:28px;min-height:70px}
+  .box{padding:8px 14px}
+  .h2{font-size:22px;margin-bottom:4px}
+  .card{font-size:21px;padding:6px 10px;min-height:74px}
+  .card svg{width:50px;height:50px}
+  .card .d{display:none}
+  .slotbox{min-height:74px;font-size:22px}
+  .slotbox svg{width:46px;height:46px}
+  .times{font-size:42px}
+  .btns .bbtn{font-size:23px;min-height:60px}
+  .tip{display:none}
+  .field{min-height:112px;padding:6px 10px}
+  .pod{height:96px}
+  .peas{grid-template-columns:repeat(auto-fill,minmax(29px,1fr))}
+  .more{margin-top:2px}
+  .stat .k{font-size:17px}
+  .stat .v{font-size:30px;line-height:1.2}
+  .ratio{height:24px}
+  .gwrap{grid-template-columns:minmax(0,1fr) 430px;margin-top:8px}
+  .lab{gap:8px}
+  .notes{max-height:calc(100dvh - 184px);overflow-y:auto;padding:0 4px 4px 0}
+  .note{font-size:21px}
+  .note .nt{font-size:23px}
+  .note .ch .bbtn{font-size:21px;min-height:56px}
+  .pun button{min-height:70px;font-size:23px}
+  .pun button svg{width:36px;height:36px}
+  .big{font-size:24px}
+  .qq{font-size:34px}
+  .fb{font-size:24px}
+  .wbox{min-height:370px}
+  .wpea{width:160px;height:160px}
+  .wpea.s{width:86px;height:86px}
+  .gcard{width:136px;height:180px}
+  .gcard b{font-size:82px}
+  .gcard small{font-size:18px}
+  .wpair.sm .gcard{width:112px;height:150px}
+  .wpair.sm .gcard b{font-size:66px}
+  .wpair.sm .gcard small{font-size:16px}
+  .wname{font-size:26px}
+  .rule{font-size:26px}
+  .wnav .bbtn{font-size:26px;min-height:68px}
+}
+/* 세로가 짧은 가로 화면 (아이패드 미니 · 옛 아이패드) */
+@media (min-width:900px) and (orientation:landscape) and (max-height:720px){
+  .tab{min-height:48px}
+  .msg{font-size:20px;padding:7px 16px}
+  .card{min-height:64px} .card svg{width:44px;height:44px}
+  .slotbox{min-height:64px} .slotbox svg{width:40px;height:40px}
+  .btns .bbtn{min-height:54px;font-size:22px}
+  .field{min-height:100px} .pod{height:84px}
+  .stat .v{font-size:27px}
+  .notes{max-height:calc(100dvh - 166px)}
+  .wbox{min-height:330px}
+  .gcard{width:120px;height:160px} .gcard b{font-size:72px}
+  .wpair.sm .gcard{width:100px;height:134px} .wpair.sm .gcard b{font-size:58px}
+  .wpea{width:130px;height:130px} .wpea.s{width:70px;height:70px}
+}
 @media (max-width:560px){
   .msg{min-height:calc(4.05em + 18px)}
   .share{font-size:16px;padding:6px 14px;min-height:50px}
@@ -190,20 +308,20 @@ footer span{display:inline-block;margin:0 6px}
   .card svg{grid-row:auto}
   .btns{grid-template-columns:1fr 1fr}
   .btns .reset{grid-column:span 2}
+  .wbox .sign{flex-basis:100%;text-align:center;line-height:1}
 }
 </style>
 </head>
 <body>
 <header><div class="head-in">
   <div class="titles"><div class="brand">어게인 실험과학 수학학원</div><h1>멘델의 완두콩</h1></div>
+  <nav>
+    <button class="tab on" data-t="0">외울 문장<span class="star">★</span></button>
+    <button class="tab" data-t="1">완두콩 교배 게임<span class="star">★</span></button>
+    <button class="tab" data-t="2">OX 퀴즈<span class="star">★</span></button>
+  </nav>
   <button class="bbtn orange share" id="share">공유하기</button>
 </div></header>
-
-<nav>
-  <button class="tab on" data-t="0">외울 문장<span class="star">★</span></button>
-  <button class="tab" data-t="1">완두콩 교배 게임<span class="star">★</span></button>
-  <button class="tab" data-t="2">OX 퀴즈<span class="star">★</span></button>
-</nav>
 
 <main>
 <!-- 1 외울 문장 -->
@@ -222,11 +340,22 @@ footer span{display:inline-block;margin:0 6px}
 
 <!-- 2 완두콩 교배 게임 -->
 <section class="panel">
+  <!-- 2-0 준비 운동 : 게임 전에 유전자 · 우성 · 교배를 짧게 익혀요 -->
+  <div id="warm">
+    <div class="whead">
+      <div class="wsteps" id="wsteps"></div>
+      <button class="bbtn white skip" id="wskip">건너뛰고 게임으로</button>
+    </div>
+    <div class="msg" id="mw" aria-live="polite"></div>
+    <div class="wbox" id="wbox"></div>
+    <div class="row wnav" id="wnav"></div>
+  </div>
+  <div id="play" hidden>
   <div class="msg" id="m1" aria-live="polite"></div>
   <div class="gwrap">
     <div class="lab">
       <div class="box">
-        <p class="h2">완두 바구니 <small>— 눌러서 부모로 골라요</small></p>
+        <p class="h2 hrow"><span>완두 바구니 <small>— 눌러서 부모로 골라요</small></span><button class="bbtn white mini" id="rewarm">준비 운동 다시 보기</button></p>
         <div class="bank" id="bank"></div>
       </div>
       <div class="box">
@@ -255,6 +384,7 @@ footer span{display:inline-block;margin:0 6px}
       <div class="ratio"><i class="a" id="ba" style="width:50%"></i><i class="b" id="bb" style="width:50%"></i></div>
     </div>
     <div class="notes" id="notes"></div>
+  </div>
   </div>
 </section>
 
@@ -359,11 +489,11 @@ start0();
 
 /* ---------- 2 완두콩 교배 게임 ---------- */
 /* 완두 그림 : 둥근 완두 · 주름진 완두 */
-const WPATH=(()=>{ let d=''; for(let i=0;i<=72;i++){ const a=i/72*2*Math.PI, r=15.2+1.9*Math.sin(a*9)+.8*Math.sin(a*4); d+=(i?'L':'M')+(20+r*Math.cos(a)).toFixed(1)+' '+(20+r*Math.sin(a)).toFixed(1); } return d+'Z'; })();
+const WPATH=(()=>{ let d=''; for(let i=0;i<=72;i++){ const a=i/72*2*Math.PI, r=15.4+1.1*Math.sin(a*13)+.9*Math.sin(a*5+1); d+=(i?'L':'M')+(20+r*Math.cos(a)).toFixed(1)+' '+(20+r*Math.sin(a)).toFixed(1); } return d+'Z'; })();
 function pea(round){
   return round
    ? '<svg viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="16" fill="#f3cd47" stroke="#b08a1c" stroke-width="2"/><ellipse cx="14" cy="13.5" rx="5" ry="3.2" fill="#fff" opacity=".6"/></svg>'
-   : `<svg viewBox="0 0 40 40" aria-hidden="true"><path d="${WPATH}" fill="#e3bb3a" stroke="#8c6a12" stroke-width="2" stroke-linejoin="round"/><path d="M12 16q5 3 9-1M17 25q5-3 10 1M14 21q3 1 5 0" fill="none" stroke="#8c6a12" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+   : `<svg viewBox="0 0 40 40" aria-hidden="true"><path d="${WPATH}" fill="#e3bb3a" stroke="#8c6a12" stroke-width="2" stroke-linejoin="round"/><path d="M9 17q6 1 8 6M19 8q2 6-1 10M31 14q-6 1-8 7M12 30q4-5 9-4M29 28q-4-1-5-6" fill="none" stroke="#8c6a12" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 }
 const POD='<svg viewBox="0 0 360 130" aria-hidden="true"><path d="M20 72 Q180 152 340 62 Q190 98 20 72Z" fill="#7cbf4a" stroke="#4f8f2a" stroke-width="4"/><g class="lid"><path d="M20 72 Q180 -4 340 62 Q190 44 20 72Z" fill="#94d061" stroke="#4f8f2a" stroke-width="4"/></g><path d="M340 62 q12 -8 14 -24" fill="none" stroke="#4f8f2a" stroke-width="4" stroke-linecap="round"/></svg>';
 
@@ -378,7 +508,7 @@ const FIRST=20, MORE=200, SHOW=40;
 let P=[null,null], F={key:null,R:0,W:0,shown:[]}, S={}, f2=0;
 
 function drawBank(){
-  $('#bank').innerHTML=BANK.map(b=>`<button class="card${b.on?'':' hide'}${b._new?' new':''}" data-k="${b.k}">${b._new?'<span class="tag">새로!</span>':''}${pea(b.r)}<span>${b.n}</span><span class="d">${b.d}</span></button>`).join('');
+  $('#bank').innerHTML=BANK.map(b=>`<button class="card${b.on?'':' hide'}${b._new?' new':''}" data-k="${b.k}">${b._new?'<span class="tag">새로!</span>':''}${pea(b.r)}<span>${b.n} <em class="gk">${b.k}</em></span><span class="d">${b.d}</span></button>`).join('');
   $$('#bank .card').forEach(c=>c.onclick=()=>choose(c.dataset.k));
   BANK.forEach(b=>b._new=false);
   markPick();
@@ -387,7 +517,7 @@ function markPick(){
   $$('#bank .card').forEach(c=>c.classList.toggle('pick',P.includes(c.dataset.k)));
   [0,1].forEach(i=>{ const el=$('#p'+i), b=P[i]&&byK(P[i]);
     el.classList.toggle('full',!!b);
-    el.innerHTML=b?`${pea(b.r)}<span>${b.n}</span><span class="x">다시 누르면 빠져요</span>`:`부모 ${i?'②':'①'}<br>비어 있어요`; });
+    el.innerHTML=b?`${pea(b.r)}<span>${b.n} <em class="gk">${b.k}</em></span><span class="x">다시 누르면 빠져요</span>`:`부모 ${i?'②':'①'}<br>비어 있어요`; });
 }
 function choose(k){
   tick(); audio();
@@ -409,7 +539,7 @@ function drawField(fresh){
   if(fresh){ pod.innerHTML=POD; pod.style.display=''; pod.classList.remove('open'); $('#peas').innerHTML='';
     setTimeout(()=>pod.classList.add('open'),60);
     setTimeout(()=>{ pod.style.display='none'; $('#peas').innerHTML=F.shown.map((r,i)=>pea(r).replace('<svg ',`<svg style="animation-delay:${i*35}ms" `)).join(''); for(let i=0;i<6;i++) setTimeout(popS,i*90); },650);
-  }
+  } else if(F.shown.length>$('#peas').children.length) $('#peas').innerHTML=F.shown.map(pea).join('');   // 더 많이 심기 : 그림도 40알까지 채움
   const t=F.R+F.W;
   $('#peamore').textContent=t>F.shown.length?`그림은 ${F.shown.length}알만 보여요 · 모두 ${t}알`:'';
   $('#nR').textContent=F.R; $('#nW').textContent=F.W;
@@ -476,6 +606,9 @@ function drawNotes(){
   $('#notes').innerHTML='<p class="h2" style="margin:0">추리 노트 <small>— 멘델처럼 규칙을 찾아요</small></p>'+[n1,n2,n3].map((n,i)=>`<div class="note ${n[0]}"><div class="nt"><span class="no">${n[0]==='ok'?'✓':i+1}</span>${T[i]}</div>${n[1]}</div>`).join('');
   $$('#notes [data-q]').forEach(b=>b.onclick=()=>answer(b));
   $$('#notes .pun button[data-i]').forEach(b=>b.onclick=()=>fill(b));
+  /* 가로 화면에선 추리 노트가 따로 스크롤돼요 → 지금 풀 칸을 보이게 */
+  const n=$('#notes'), c=$('#notes .note.cur');
+  if(n.scrollHeight>n.clientHeight) n.scrollTo({top:c?n.scrollTop+c.getBoundingClientRect().top-n.getBoundingClientRect().top-36:n.scrollHeight,behavior:'smooth'});
 }
 const RIGHT={a1:'둥근 모양',b1:'우성',a2:'숨어 있었다',b2:'3 : 1',a3:'하나씩'};
 const WRONG={
@@ -506,6 +639,89 @@ function fill(b){
 }
 function start1(){ msg('#m1','멘델은 완두를 8년 동안 길러 유전 법칙을 처음 찾은 과학자예요. 멘델처럼 완두를 교배해 규칙을 찾아요! 먼저 바구니에서 <b>늘 둥근 완두</b>와 <b>늘 주름진 완두</b>를 골라요.'); }
 $('#pod').innerHTML=POD; drawBank(); drawField(false); drawNotes(); start1();
+
+/* ---------- 2-0 준비 운동 : ① 유전자 한 쌍 · ② 우성과 열성 · ③ 교배하면? ---------- */
+const GN={R:'둥근 유전자',r:'주름진 유전자'}, WST=['① 유전자 한 쌍','② 우성과 열성','③ 교배하면?'];
+const gc=(g,cls='',attr='')=>`<button class="gcard ${g==='R'?'gR':'gr'} ${cls}" ${attr}><b>${g}</b><small>${GN[g]}</small></button>`;
+const isRound=g=>g.includes('R');
+let W={};
+function wstep(st){ $('#wsteps').innerHTML=WST.map((t,i)=>`<span class="${i<st?'ok':i===st?'on':''}">${i<st?'✓ ':''}${t}</span>`).join(''); }
+function wgo(label,cls,fn){ $('#wnav').innerHTML=`<button class="bbtn ${cls}" id="wgo">${label}</button>`; $('#wgo').onclick=()=>{ tick(); fn(); }; }
+
+/* ① 둥근 완두 속 카드 두 장 뒤집기 */
+function warm1(){
+  W={open:[0,0]}; wstep(0); $('#wnav').innerHTML='';
+  msg('#mw','완두콩 한 알 속에는 모양을 정하는 <b>유전자</b>가 두 개 들어 있어요. 두 개가 짝을 이뤄 <b>한 쌍</b>이에요. 뒤집힌 카드 두 장을 눌러 봐요!');
+  draw1();
+}
+function draw1(){
+  const G=['R','r'];
+  $('#wbox').innerHTML=`<div class="wcol"><div class="wpea">${pea(true)}</div><div class="wname">둥근 완두 한 알</div></div><div class="sign">→</div>`+
+    `<div class="wpair">${G.map((g,i)=>`<div class="wcol">${W.open[i]?gc(g,W.just===i?'flip':'','disabled'):`<button class="gcard back" data-i="${i}"><b>?</b><small>눌러서 뒤집기</small></button>`}<div class="wname"><small>부모 ${i?'②':'①'}에게서 받음</small></div></div>`).join('')}</div>`;
+  $$('#wbox .back').forEach(b=>b.onclick=()=>{
+    const i=+b.dataset.i; W.open[i]=1; W.just=i; popS(); draw1();
+    if(!(W.open[0]&&W.open[1])){ msg('#mw',`<b>${G[i]}</b>는 <b>${GN[G[i]]}</b>예요. 나머지 카드도 뒤집어 봐요!`,'good'); return; }
+    ding(); msg('#mw','이 완두는 <b>둥근 유전자 R</b>와 <b>주름진 유전자 r</b>를 한 쌍으로 가졌어요. 그런데 겉모습은 둥글어요. 왜 그럴까요?','good');
+    wgo('다음 ▶','',warm2);
+  });
+}
+
+/* ② 카드 보고 겉모습 맞히기 (우성 · 열성) */
+function warm2(){
+  W={qs:shuffle(['RR','Rr','rr']),i:0,ok:false}; wstep(1);
+  msg('#mw','R과 r이 함께 있으면 겉으로는 <b>둥근 모양</b>만 나타나요. 카드를 보고 완두의 겉모습을 맞혀 봐요!');
+  draw2();
+}
+function draw2(){
+  const g=W.qs[W.i], r=isRound(g);
+  $('#wbox').innerHTML=`<div class="rule">R과 r이 함께 있을 때 겉으로 나타나는 특징 = <b>우성</b> (둥근 모양)<br>숨어서 안 보이는 특징 = <b>열성</b> (주름진 모양)</div>`+
+    `<div class="wcol"><div class="wpair">${gc(g[0],'','disabled')}${gc(g[1],'','disabled')}</div><div class="wname"><small>${W.i+1} / 3번째 완두의 유전자</small></div></div><div class="sign">→</div>`+
+    `<div class="wcol">${W.ok?`<div class="wpea new">${pea(r)}</div><div class="wname">${r?'둥근':'주름진'} 완두</div>`:'<div class="wpea qm">?</div><div class="wname">겉모습은?</div>'}</div>`;
+  if(W.ok){ wgo(W.i<2?'다음 완두 ▶':'다음 ▶','',()=>{ if(++W.i<3){ W.ok=false; draw2(); msg('#mw','이 완두의 겉모습은 어떨까요?'); } else warm3(); }); return; }
+  $('#wnav').innerHTML=`<button class="bbtn white" data-s="1">${pea(true)} 둥근 완두</button><button class="bbtn white" data-s="0">${pea(false)} 주름진 완두</button>`;
+  $$('#wnav [data-s]').forEach(b=>b.onclick=()=>{
+    if(!!+b.dataset.s!==r){ shake(b); boo(); msg('#mw','아쉬워요. '+(r?'R 카드가 하나라도 있으면 겉으로는 둥근 모양이 나타나요.':'R 카드가 하나도 없어요. 둥근 유전자가 없으면 어떤 모양일까요?'),'warn'); return; }
+    W.ok=true; ding(); draw2(); sparkle($('#wbox .wpea'));
+    msg('#mw',{RR:'딩동댕! 둥근 유전자만 두 개라서 둥근 완두예요.',Rr:'딩동댕! R과 r이 함께 있으면 우성인 둥근 모양만 보여요. r은 속에 숨어 있어요.',rr:'딩동댕! 주름진 유전자 r만 두 개일 때 주름진 모양이 나타나요.'}[g]+(W.i===2?' 주름진 완두는 r이 <b>두 개</b>일 때만 나와요!':''),'good');
+  });
+}
+
+/* ③ 부모에게서 카드를 한 장씩 받아 자손 만들기 — 두 번 해서 다른 자손도 나옴을 봐요 */
+const WP=[['R','r'],['r','r']];
+function warm3(){
+  W={round:0,pick:[null,null],used:null}; wstep(2); $('#wnav').innerHTML='';
+  msg('#mw','<b>교배</b>하면 두 부모가 저마다 가진 한 쌍 가운데 <b>하나씩</b> 자손에게 줘요. 부모 ①에게서 한 장, 부모 ②에게서 한 장을 눌러 골라요.');
+  draw3();
+}
+function draw3(){
+  const full=W.pick[0]!==null&&W.pick[1]!==null, got=W.pick.map((k,p)=>k===null?null:WP[p][k]), kid=full&&got.join('');
+  const par=(p,name,round)=>`<div class="wcol"><div class="wpea s">${pea(round)}</div><div class="wname">부모 ${p?'②':'①'}<small>${name}</small></div>`+
+    `<div class="wpair sm">${WP[p].map((g,i)=>gc(g,W.pick[p]===i?'pick':(p===0&&W.round===1&&W.used===i?'used':''),`data-p="${p}" data-i="${i}"${full?' disabled':''}`)).join('')}</div></div>`;
+  $('#wbox').innerHTML=par(0,'둥근 완두',true)+'<div class="sign">×</div>'+par(1,'주름진 완두',false)+'<div class="sign">→</div>'+
+    `<div class="wcol"><div class="wpea s${full?' new':' qm'}">${full?pea(isRound(kid)):'?'}</div><div class="wname">자손<small>${full?(isRound(kid)?'둥근 완두':'주름진 완두'):'아직 몰라요'}</small></div>`+
+    `<div class="wpair sm">${[0,1].map(p=>got[p]?gc(got[p],W.just===p?'flip':'','disabled'):`<div class="gcard empty"><b>?</b><small>부모 ${p?'②':'①'}에게서</small></div>`).join('')}</div></div>`;
+  $$('#wbox [data-p]').forEach(b=>b.onclick=()=>{
+    const p=+b.dataset.p, i=+b.dataset.i;
+    if(p===0&&W.round===1&&i===W.used){ shake(b); boo(); msg('#mw','이번에는 부모 ①의 <b>다른 카드</b>를 골라 봐요!','warn'); return; }
+    W.pick[p]=i; W.just=p; popS(); draw3();
+    if(W.pick[0]===null||W.pick[1]===null){ msg('#mw',`부모 ${p?'②':'①'}에게서 <b>${WP[p][i]}</b>를 받았어요. 이제 부모 ${p?'①':'②'}에게서도 한 장 골라요.`); return; }
+    W.just=null;
+    const k=[WP[0][W.pick[0]],WP[1][W.pick[1]]].join(''), shape=isRound(k)?'둥근':'주름진';
+    if(W.round===0){
+      ding(); W.used=W.pick[0];
+      msg('#mw',`자손은 <b>${k}</b> — <b>${shape} 완두</b>가 태어났어요! 같은 부모에게서 다른 모양의 자손도 태어날 수 있을까요?`,'good');
+      wgo('한 번 더 교배하기','orange',()=>{ W.round=1; W.pick=[null,null]; draw3(); $('#wnav').innerHTML=''; msg('#mw','이번에는 부모 ①의 <b>다른 카드</b>를 골라요. 부모 ②에게서도 한 장 골라요.'); });
+    } else {
+      cheer(); sparkle($('#wbox'));
+      msg('#mw',`이번엔 <b>${k}</b> — <b>${shape} 완두</b>! 같은 부모라도 어떤 카드를 받느냐에 따라 둥근 완두도, 주름진 완두도 태어나요. 어떤 카드를 줄지는 그때그때 달라서, 멘델은 완두를 아주 많이 길러 규칙을 찾았어요.`,'good');
+      wgo('교배 게임 시작 🌱','green',play);
+    }
+  });
+}
+function play(){ $('#warm').hidden=true; $('#play').hidden=false; window.scrollTo(0,0); }
+$('#wskip').onclick=()=>{ tick(); play(); };
+$('#rewarm').onclick=()=>{ tick(); $('#play').hidden=true; $('#warm').hidden=false; warm1(); window.scrollTo(0,0); };
+warm1();
 
 /* ---------- 3 OX 퀴즈 ---------- */
 let qi=0, score=0;
