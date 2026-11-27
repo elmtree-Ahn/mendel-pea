@@ -8,15 +8,15 @@
 <script>
 /* ===== OX 퀴즈 : [문제, 정답, 풀이] — 여기만 고치면 퀴즈가 바뀌어요 (12쪽 OX와 같게) ===== */
 const QS=[
- ['점박이(Aa) 강아지는 새끼에게 A와 a를 둘 다 준다.','X','한 쌍의 유전자는 나뉘어, A와 a 중 하나만 새끼에게 전해져요. 이것이 분리의 법칙이에요.'],
+ ['점박이(Aa) 강아지는 새끼 한 마리에게 A와 a를 둘 다 준다.','X','한 쌍의 유전자는 나뉘어, 새끼 한 마리에게는 A와 a 중 하나만 전해져요. 이것이 분리의 법칙이에요.'],
  ['두 부모가 모두 a를 주면, 새끼는 민무늬(aa)가 된다.','O','a를 두 개 받은 새끼는 A가 없어서, 숨어 있던 민무늬가 겉으로 나타나요.'],
  ['Aa 강아지는 우성인 A 때문에 겉으로 점박이로 보인다.','O','유전자 한 쌍이 서로 다를 때 겉으로 나타나는 것이 우성이에요. 열성인 a는 숨어요.'],
  ['점박이(Aa) 부모에게서 태어난 새끼는 모두 점박이다.','X','두 부모가 모두 a를 주면 민무늬 새끼가 태어나요. 네 마리 중 한 마리꼴이에요.'],
- ['털색 유전자 한 쌍도 나뉘어, 새끼에게 하나씩 전해진다.','O','무늬 유전자처럼 털색 유전자 한 쌍(Bb)도 나뉘어 하나씩 전해져요. 그래서 흰색 : 갈색도 3 : 1이에요.']
+ ['검은 털 래브라도 리트리버 두 마리에게서도 초콜릿색 강아지가 태어날 수 있다.','O','두 부모가 초콜릿색 유전자를 하나씩 숨기고 있으면, 둘 다 그 유전자를 줄 때 초콜릿색 강아지가 태어나요. 네 마리 중 한 마리꼴이에요.']
 ];
 /* ===== 외울 문장 : 빈칸 정답(차례대로)과 낱말 단추 ===== */
-const SLOTS=['유전자','나뉘어','하나씩'];
-const WORDS=['유전자','나뉘어','하나씩','둘 다','섞여','우성'];
+const SLOTS=['각각','유전자','하나씩'];
+const WORDS=['각각','유전자','하나씩','둘 다','섞여','우성'];
 </script>
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -210,7 +210,7 @@ footer span{display:inline-block;margin:0 6px}
 <section class="panel on">
   <div class="memo">
     <div class="msg" id="m0" aria-live="polite"></div>
-    <div class="sent" id="sent"><span class="term">분리의 법칙</span> : 부모가 가진 한 쌍의 <span class="slot"></span>가 <span class="slot"></span>, 자손에게 <span class="slot"></span> 전해지는 것</div>
+    <div class="sent" id="sent"><span class="term">분리의 법칙</span> : 부모가 <span class="slot"></span> 가진 한 쌍의 <span class="slot"></span>가 나뉘어, 자손에게 <span class="slot"></span> 전해지는 것</div>
     <div class="words" id="words"></div>
     <div class="read" id="read">
       <p>소리 내어 세 번 읽어요</p>
@@ -330,7 +330,7 @@ $('#share').onclick=async()=>{
 };
 
 /* ---------- 1 외울 문장 ---------- */
-const SHINT=['부모에게서 물려받아 특징을 정하는 것은? 11월 2주차에 배운 낱말이에요.','한 쌍이 둘로 갈라지는 것을 뭐라고 할까요?','Aa 부모는 A와 a를 둘 다 줄까요, 하나만 줄까요?'];
+const SHINT=['아빠도 엄마도 저마다 한 쌍을 가졌어요. 따로따로를 뜻하는 낱말은?','부모에게서 물려받아 특징을 정하는 것은? 11월 2주차에 배운 낱말이에요.','Aa 부모는 새끼 한 마리에게 A와 a를 둘 다 줄까요, 하나만 줄까요?'];
 let si=0, reads=0;
 function slots0(){ $$('#sent .slot').forEach((s,i)=>{ s.textContent=i<si?SLOTS[i]:' '; s.className='slot'+(i<si?' ok':i===si?' cur':''); }); }
 function start0(){
@@ -471,7 +471,7 @@ function drawNotes(){
   const n3=!S.b2?['lock','②를 풀면 열려요.']
     :!S.a3?['cur','<div>1대 완두는 둥근 유전자 <b>R</b>와 주름진 유전자 <b>r</b>를 한 쌍으로 가졌어요.</div>'+q('부모 완두는 자손에게 한 쌍 가운데 몇 개를 줄까요?',['둘 다','하나씩'],'a3')]
     :(S.cells||0)<4?['cur',`<div class="ans">한 쌍이 나뉘어, 하나씩 줘요!</div><div>빈칸을 차례로 눌러 자손을 만들어요. (${S.cells||0} / 4)</div>${pun()}`]
-    :['ok',`${pun()}<div class="big">둥근 3 : 주름진 1 — 게임 결과와 같아요!<br><b>분리의 법칙</b> : 부모가 가진 한 쌍의 유전자가 나뉘어, 자손에게 하나씩 전해지는 것</div><div class="mendel">멘델의 실제 기록 (1865년 발표)<br>둥근 <b>5474</b>개 : 주름진 <b>1850</b>개 = 약 <b>3 : 1</b></div>`];
+    :['ok',`${pun()}<div class="big">둥근 3 : 주름진 1 — 게임 결과와 같아요!<br><b>분리의 법칙</b> : 부모가 각각 가진 한 쌍의 유전자가 나뉘어, 자손에게 하나씩 전해지는 것</div><div class="mendel">멘델의 실제 기록 (1865년 발표)<br>둥근 <b>5474</b>개 : 주름진 <b>1850</b>개 = 약 <b>3 : 1</b></div>`];
   const T=['1대 완두는 어떤 모양일까?','주름진 특징은 어디로 갔을까?','왜 3 : 1일까?'];
   $('#notes').innerHTML='<p class="h2" style="margin:0">추리 노트 <small>— 멘델처럼 규칙을 찾아요</small></p>'+[n1,n2,n3].map((n,i)=>`<div class="note ${n[0]}"><div class="nt"><span class="no">${n[0]==='ok'?'✓':i+1}</span>${T[i]}</div>${n[1]}</div>`).join('');
   $$('#notes [data-q]').forEach(b=>b.onclick=()=>answer(b));
@@ -504,7 +504,7 @@ function fill(b){
   msg('#m1','네 칸 중 셋은 둥근, 하나는 주름진 완두! 그래서 3 : 1이에요. 멘델이 찾은 <b>분리의 법칙</b>을 완성했어요!','good');
   sparkle($('#notes')); done(1);
 }
-function start1(){ msg('#m1','멘델처럼 완두를 교배해 규칙을 찾아요. 먼저 바구니에서 <b>늘 둥근 완두</b>와 <b>늘 주름진 완두</b>를 골라요.'); }
+function start1(){ msg('#m1','멘델은 완두를 8년 동안 길러 유전 법칙을 처음 찾은 과학자예요. 멘델처럼 완두를 교배해 규칙을 찾아요! 먼저 바구니에서 <b>늘 둥근 완두</b>와 <b>늘 주름진 완두</b>를 골라요.'); }
 $('#pod').innerHTML=POD; drawBank(); drawField(false); drawNotes(); start1();
 
 /* ---------- 3 OX 퀴즈 ---------- */
